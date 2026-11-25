@@ -9,13 +9,19 @@ public class Main {
         Scanner leitura = new Scanner(System.in);
         Forca forca = new Forca();
 
-        System.out.println("JOGO DA FORCA (HANGMAN)");
         forca.mostrarLetras();
-        while (forca.getAcertos() != forca.getPalavras()[0].length() && forca.getErros() < 6) {
-            System.out.println("Digite uma letra: ");
+        System.out.println("*********************************");
+        System.out.println("JOGO DA FORCA (HANGMAN)");
+        System.out.println("*********************************");
+        while (forca.getErros() != 6) {
+            if (forca.verificaAcerto()) break;
+            System.out.print("QUAL LETRA VOCÊ ACHA QUE TEM? ");
             char letra = leitura.next().charAt(0);
+            System.out.println("*********************************");
             forca.jogar(letra);
+            System.out.println("*********************************");
         }
         System.out.println("JOGO FINALIZADO");
+        System.out.println("*********************************");
     }
 }

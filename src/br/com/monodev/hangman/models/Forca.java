@@ -2,16 +2,15 @@ package br.com.monodev.hangman.models;
 
 public class Forca {
     private String[] palavras = {"parada", "bola", "sorvete"};
-    private char[] letras = new char[6];
-    private int acertos = 0;
+    private char[] letrasTentadas = new char[palavras[0].length() + 6];
     private int erros = 0;
 
     public String[] getPalavras() {
         return palavras;
     }
 
-    public int getAcertos() {
-        return acertos;
+    public char[] getLetrasTentadas() {
+        return letrasTentadas;
     }
 
     public int getErros() {
@@ -19,16 +18,35 @@ public class Forca {
     }
 
     public void jogar(char letra) {
-        int letraErrada = 0;
-        for (char c : palavras[0].toCharArray()) {
-            if (letra == c) {
-                acertos++;
+        if (verificarLetraRepetida(letra)) {
+            System.out.println("LETRA REPETIDA, TENTE OUTRA");
+        } else {
+
+            for (int i = 0; i < letrasTentadas.length; i++) {
+                if (letrasTentadas[i] == 0) {
+                    letrasTentadas[i] = letra;
+                    break;
+                }
+            }
+
+            char[] palavra = palavras[0].toCharArray();
+            int acerto = 0;
+            int quantErros = 0;
+            for (int i = 0; i < palavras[0].length(); i++) {
+                if (letra != palavra[i]) {
+                    quantErros++;
+                } else {
+                    acerto++;
+                }
+            }
+
+            if (quantErros != palavra.length) {
+                System.out.println("ACERTOU A LETRA - QUANT:" + acerto);
             } else {
-                letraErrada++;
+                System.out.println("ERROU A ELTRA");
+                erros++;
             }
         }
-        if (letraErrada == palavras[0].length()) erros++;
-        System.out.println(letra);
     }
 
     public void mostrarLetras() {
@@ -37,5 +55,22 @@ public class Forca {
             System.out.print("_ ");
         }
         System.out.println();
+    }
+
+    public boolean verificarLetraRepetida(char letra) {
+        for (char i : letrasTentadas) {
+           return letra == i;
+        }
+        return false;
+    }
+
+    public boolean verificaAcerto() {
+        int acertos = 0;
+        for (char l : letrasTentadas) {
+            for (char p : palavras[0].toCharArray()) {
+                if (l == p) acertos++;
+            }
+        }
+        return acertos == palavras[0].length();
     }
 }
